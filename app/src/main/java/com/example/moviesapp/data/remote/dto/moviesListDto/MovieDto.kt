@@ -1,6 +1,7 @@
 package com.example.moviesapp.data.remote.dto.moviesListDto
 
 
+import com.example.moviesapp.domain.model.Movie
 import com.google.gson.annotations.SerializedName
 
 data class MovieDto(
@@ -13,6 +14,14 @@ data class MovieDto(
     val releaseDate: String,
     @SerializedName("vote_average")
     val voteAverage: Double,
-    @SerializedName("vote_count")
-    val voteCount: Int
 )
+
+fun MovieDto.toMovie(): Movie {
+    return Movie(
+        id = this.id,
+        originalTitle = this.originalTitle,
+        posterUrl = "https://image.tmdb.org/t/p" + this.posterPath,
+        releaseYear = this.releaseDate.take(4), // Extracting the year from release date
+        voteAverage = this.voteAverage
+    )
+}
