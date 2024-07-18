@@ -1,5 +1,6 @@
 package com.example.moviesapp.data.repository
 
+import android.util.Log
 import com.example.moviesapp.core.utils.Resource
 import com.example.moviesapp.data.remote.TheMovieDBApi
 import com.example.moviesapp.data.remote.dto.movieInfoDto.toMovieInfo
@@ -14,6 +15,8 @@ import java.io.IOException
 
 class MovieRepositoryImpl(private val api: TheMovieDBApi) : MovieRepository {
     override fun getMovies(pageNum: Int): Flow<Resource<List<Movie>>> = flow {
+
+        Log.d("HERE!", "fun getMovies() MovieRepositoryImpl")
         try {
             emit(Resource.Loading())
             val movies = api.getTopRatedMovies(page = pageNum).results.map { it.toMovie() }

@@ -20,7 +20,7 @@ fun MovieDto.toMovie(): Movie {
     return Movie(
         id = this.id,
         originalTitle = this.originalTitle,
-        posterUrl = "https://image.tmdb.org/t/p" + this.posterPath,
+        posterUrl = "https://image.tmdb.org/t/p/w300" + this.posterPath,
         releaseYear = this.releaseDate.take(4), // Extracting the year from release date
         voteAverage = this.voteAverage
     )
