@@ -1,10 +1,14 @@
 package com.example.moviesapp.presentation.movie_list
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +30,20 @@ fun MovieListScreen(
     val state = viewModel.state.value
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.movies) { movie ->
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(state.movies.size) { index ->
+                val movie = state.movies[index]
                 MovieListItem(
                     movie = movie,
-                    onItemClick = {
-                        //navController.navigate(Screen.MovieInfoScreen.route + "/${movie.id}")
-                    })
+                    onItemClick ={//navController.navigate(Screen.MovieInfoScreen.route + "/${movie.id}")
+                 }
+                )
             }
         }
         if(state.error.isNotBlank()) {
