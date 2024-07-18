@@ -25,7 +25,7 @@ class MovieRepositoryImpl(private val api: TheMovieDBApi) : MovieRepository {
         }
     }
 
-    override fun getCoinDetails(movieId: Int): Flow<Resource<MovieInfo>> = flow {
+    override fun getMovieInfo(movieId: Int): Flow<Resource<MovieInfo>> = flow {
 
         try {
             emit(Resource.Loading())

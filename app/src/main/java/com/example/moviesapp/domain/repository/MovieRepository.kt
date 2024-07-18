@@ -9,5 +9,5 @@ interface MovieRepository {
 
     fun getMovies(pageNum: Int = 1): Flow<Resource<List<Movie>>>
 
-    fun getCoinDetails(movieId: Int): Flow<Resource<MovieInfo>>
+    fun getMovieInfo(movieId: Int): Flow<Resource<MovieInfo>>
 }
