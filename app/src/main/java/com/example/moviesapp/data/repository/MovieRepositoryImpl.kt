@@ -16,7 +16,7 @@ class MovieRepositoryImpl(private val api: TheMovieDBApi) : MovieRepository {
     override fun getMovies(pageNum: Int): Flow<Resource<List<Movie>>> = flow {
         try {
             emit(Resource.Loading())
-            val movies = api.getTopRatedMovies(page = pageNum).map { it.toMovie() }
+            val movies = api.getTopRatedMovies(page = pageNum).results.map { it.toMovie() }
             emit(Resource.Success(movies))
         } catch (e: HttpException) {
             emit(Resource.Error(message = e.localizedMessage ?: "An unexpected error occurred"))
