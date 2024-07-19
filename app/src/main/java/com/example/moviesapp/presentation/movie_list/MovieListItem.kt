@@ -78,7 +78,7 @@ fun MovieListItem(
             )
             Text(
                 text = String.format("%.1f", movie.voteAverage),
-                color = MaterialTheme.colorScheme.secondary
+                color = Color.Black
             )
         }
     }

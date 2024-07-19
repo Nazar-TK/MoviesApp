@@ -1,7 +1,6 @@
 package com.example.moviesapp.data.remote
 
 import com.example.moviesapp.data.remote.dto.movieInfoDto.MovieInfoDto
-import com.example.moviesapp.data.remote.dto.moviesListDto.MovieDto
 import com.example.moviesapp.data.remote.dto.moviesListDto.MoviesListDto
 import retrofit2.http.GET
 import retrofit2.http.Path
