@@ -1,6 +1,5 @@
 package com.example.moviesapp.presentation.movie_info
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -31,7 +30,6 @@ class MovieInfoViewModel @Inject constructor(
     }
 
     private fun getMovieInfo(movieId: String) {
-        Log.d("HERE!", "getMovieInfo Launch")
         repository.getMovieInfo(movieId).onEach { result ->
             when (result) {
                 is Resource.Success -> {
