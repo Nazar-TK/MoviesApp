@@ -9,6 +9,8 @@ import com.example.moviesapp.core.utils.Resource
 import com.example.moviesapp.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -18,37 +20,45 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(private val repository: MovieRepository) :
     ViewModel() {
 
-    private val _state = mutableStateOf(MovieListState())
-    val state: State<MovieListState> = _state
+    private val _state = MutableStateFlow(MovieListState())
+    val state: StateFlow<MovieListState> = _state
+
+    private var currentPage = 1
 
     init {
         getMovies()
     }
 
     private fun getMovies() {
-        viewModelScope.launch() {
-            Log.d("HERE!", "getMovies Launch")
-            repository.getMovies().onEach { result ->
+        viewModelScope.launch {
+            Log.d("MovieListViewModel", "Fetching movies for page: $currentPage")
+            repository.getMovies(pageNum = currentPage).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _state.value = MovieListState(movies = result.data ?: emptyList())
-                        Log.d("HERE!", "getMovies Success")
-                        Log.d("HERE!", "getMovies Success ${result.data?.get(0)?.posterUrl ?: ""}")
-                    }
-
-                    is Resource.Loading -> {
-                        _state.value = MovieListState(isLoading = true)
-                        Log.d("HERE!", "getMovies Loading")
-                    }
-
-                    is Resource.Error -> {
-                        _state.value = MovieListState(
-                            error = result.message ?: "An unexpected error occurred."
+                        val newMovies = result.data ?: emptyList()
+                        val updatedMovies = _state.value.movies + newMovies
+                        _state.value = _state.value.copy(
+                            movies = updatedMovies,
+                            isLoading = false
                         )
-                        Log.d("HERE!", "getMovies Error")
+                        Log.d("MovieListViewModel", "Movies fetched: ${newMovies.size}")
+                    }
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                    is Resource.Error -> {
+                        _state.value = _state.value.copy(
+                            error = result.message ?: "An unexpected error occurred.",
+                            isLoading = true
+                        )
                     }
                 }
             }.launchIn(viewModelScope)
         }
+    }
+
+    fun loadMoreMovies() {
+        currentPage++
+        getMovies()
     }
 }
