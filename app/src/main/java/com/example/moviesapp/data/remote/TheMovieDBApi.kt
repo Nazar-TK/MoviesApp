@@ -16,7 +16,7 @@ interface TheMovieDBApi {
 
     @GET("{movieId}?language=en-US")
     suspend fun getMovieInfoById(
-        @Path("movieId") movieId: Int,
+        @Path("movieId") movieId: String,
     ) : MovieInfoDto
 
 

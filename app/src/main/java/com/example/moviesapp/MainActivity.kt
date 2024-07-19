@@ -9,7 +9,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.moviesapp.core.utils.Constants
+import com.example.moviesapp.presentation.Screen
+import com.example.moviesapp.presentation.movie_info.MovieInfoScreen
 import com.example.moviesapp.presentation.movie_list.MovieListScreen
 import com.example.moviesapp.presentation.ui.theme.MoviesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,13 +28,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MoviesAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.White
                 ) {
-                    Text(text = "HELLO!")
-                    MovieListScreen()
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.MovieListScreen.route
+                    ) {
+                        composable(
+                            route = Screen.MovieListScreen.route
+                        ) {
+                            MovieListScreen(navController = navController)
+                        }
+                        composable(
+                            route = Screen.MovieInfoScreen.route + "/{${Constants.MOVIE_ID}}"
+                        ) {
+                            MovieInfoScreen()
+                        }
+                    }
                 }
             }
         }

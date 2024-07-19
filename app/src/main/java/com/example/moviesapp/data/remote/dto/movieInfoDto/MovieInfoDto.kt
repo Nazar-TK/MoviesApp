@@ -25,7 +25,7 @@ data class MovieInfoDto(
 fun MovieInfoDto.toMovieInfo(): MovieInfo {
     return MovieInfo(
         id = this.id,
-        backdropUrl = "https://image.tmdb.org/t/p" + this.backdropPath,
+        backdropUrl = "https://image.tmdb.org/t/p/w500" + this.backdropPath,
         originalTitle = this.originalTitle,
         tagline = this.tagline,
         genres = this.genres.joinToString(", ") { it.name },

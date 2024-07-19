@@ -27,26 +27,6 @@ class MovieListViewModel @Inject constructor(private val repository: MovieReposi
 
     private fun getMovies() {
         viewModelScope.launch() {
-//            Log.d("HERE!", "getMovies launch")
-//            repository.getMovies().onEach { result ->
-//                when (result) {
-//                    is Resource.Success -> {
-//                        Log.d("HERE!", "getMovies Success")
-//                        _state.value = MovieListState(movies = result.data ?: emptyList())
-//                    }
-//
-//                    is Resource.Loading -> {
-//                        Log.d("HERE!", "getMovies Loading")
-//                        _state.value = MovieListState(error = result.message ?: "Something went wrong.")
-//                    }
-//
-//                    is Resource.Error -> {
-//                        Log.d("HERE!", "getMovies Error")
-//                        _state.value = MovieListState(isLoading = true)
-//                    }
-//                }
-//            }
-//        }
             Log.d("HERE!", "getMovies Launch")
             repository.getMovies().onEach { result ->
                 when (result) {

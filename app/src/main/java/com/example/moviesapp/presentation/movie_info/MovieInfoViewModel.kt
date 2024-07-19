@@ -11,6 +11,7 @@ import com.example.moviesapp.core.utils.Resource
 import com.example.moviesapp.domain.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieInfoViewModel @Inject constructor(
     private val repository: MovieRepository,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
 
@@ -26,29 +27,28 @@ class MovieInfoViewModel @Inject constructor(
     val state: State<MovieInfoState> = _state
 
     init {
-        savedStateHandle.get<Int>(Constants.MOVIE_ID)?.let { movieID ->
+        savedStateHandle.get<String>(Constants.MOVIE_ID)?.let { movieID ->
             getMovieInfo(movieID)
         }
     }
 
-    private fun getMovieInfo(movieId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getMovieInfo(movieId).onEach { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        _state.value = MovieInfoState(movie = result.data)
-                    }
+    private fun getMovieInfo(movieId: String) {
+        Log.d("HERE!", "getMovieInfo Launch")
+        repository.getMovieInfo(movieId).onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _state.value = MovieInfoState(movie = result.data)
+                }
 
-                    is Resource.Loading -> {
-                        _state.value =
-                            MovieInfoState(error = result.message ?: "Something went wrong.")
-                    }
+                is Resource.Loading -> {
+                    _state.value =
+                        MovieInfoState(error = result.message ?: "Something went wrong.")
+                }
 
-                    is Resource.Error -> {
-                        _state.value = MovieInfoState(isLoading = true)
-                    }
+                is Resource.Error -> {
+                    _state.value = MovieInfoState(isLoading = true)
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }

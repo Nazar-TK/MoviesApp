@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.moviesapp.R
@@ -34,32 +35,37 @@ fun MovieListItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .clip(RoundedCornerShape(8.dp))
             .clickable { onItemClick(movie) }
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color.White)
-            .padding(16.dp)
+            .background(Color.LightGray)
+            .padding(bottom = 10.dp)
+
     ) {
         AsyncImage(
             model = movie.posterUrl,
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(300.dp)
                 .clip(RoundedCornerShape(8.dp))
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
+            modifier = Modifier.padding(horizontal = 10.dp),
             text = movie.originalTitle,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 4.dp)
+            color = Color.Black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
+            modifier = Modifier.padding(horizontal = 10.dp),
             text = movie.releaseYear,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            color = Color.DarkGray
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
+            modifier = Modifier.padding(horizontal = 10.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -68,11 +74,11 @@ fun MovieListItem(
                 contentDescription = "Rating",
                 modifier = Modifier
                     .size(24.dp)
-                    .padding(end = 4.dp)
+                    .padding(end = 4.dp),
             )
             Text(
-                text = movie.voteAverage.toString(),
-                color = MaterialTheme.colorScheme.primary
+                text = String.format("%.1f", movie.voteAverage),
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }

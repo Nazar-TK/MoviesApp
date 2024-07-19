@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,7 +23,7 @@ import com.example.moviesapp.presentation.Screen
 
 @Composable
 fun MovieListScreen(
-    //navController: NavController,
+    navController: NavController,
     viewModel: MovieListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -41,7 +40,8 @@ fun MovieListScreen(
                 val movie = state.movies[index]
                 MovieListItem(
                     movie = movie,
-                    onItemClick ={//navController.navigate(Screen.MovieInfoScreen.route + "/${movie.id}")
+                    onItemClick ={
+                    navController.navigate(Screen.MovieInfoScreen.route + "/${movie.id}")
                  }
                 )
             }
@@ -58,7 +58,7 @@ fun MovieListScreen(
             )
         }
         if(state.isLoading) {
-            //CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+           CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }
